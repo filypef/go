@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 )
 
@@ -41,7 +40,8 @@ func readCommand() int {
 	var comando int
 	fmt.Scan(&comando)
 
-	fmt.Println("O comando é: ", comando)
+	// fmt.Println("O comando é: ", comando)
+
 	return comando
 }
 
@@ -50,14 +50,46 @@ func exitSucess() {
 }
 
 func initMonitoring(command int) {
-	fmt.Println("Monitoramento...", command)
-	site := "https://random-status-code.herokuapp.com/"
+	// fmt.Println("Monitoramento...", command)
+	// // site := "https://random-status-code.herokuapp.com/"
 
-	response, _ := http.Get(site)
+	sites := []string{"alura.com.br", "globo.com", "natura.com.br"}
 
-	if response.StatusCode == 200 {
-		fmt.Println("O site: ", site, "foi carregado com sucesso", response.StatusCode)
-	} else {
-		fmt.Print("O site: ", site, " está com erro ", response.StatusCode)
+	//for tradicional
+	// for i := 0; i < len(sites); i++ {
+	// 	fmt.Println(sites[i])
+	// }
+
+	for _, site := range sites {
+		fmt.Println(site)
 	}
+
+	// response, _ := http.Get(site)
+
+	// if response.StatusCode == 200 {
+	// 	fmt.Println("O site: ", site, "foi carregado com sucesso", response.StatusCode)
+	// } else {
+	// 	fmt.Print("O site: ", site, " está com erro ", response.StatusCode)
+	// }
 }
+
+// Exercicio de slice no GO
+// func exibeNomes() {
+// 	nomes := []string{"Filype", "Gabriela", "Marli", "Danielly"}
+
+// 	fmt.Println("Os nomes são", nomes)
+
+// 	fmt.Println("Tamanho do slice: ", len(nomes))
+// 	fmt.Println("Capacidade do meu array: ", cap(nomes))
+// 	fmt.Println("--------------------------------------")
+
+// 	nomes = append(nomes, "Josuel")
+
+// 	fmt.Println("Tamanho do slice: ", len(nomes))
+// 	fmt.Println("Capacidade do meu array: ", cap(nomes))
+
+// 	fmt.Println("--------------------------------------")
+
+// 	cartas := []int{1, 2, 3, 5, 8, 13, 21}
+// 	fmt.Println("Quantidade de cartas necessárias ", len(cartas))
+// }
