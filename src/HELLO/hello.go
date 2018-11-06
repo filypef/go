@@ -2,25 +2,28 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 )
 
 func main() {
 
-	displayMenu()
+	for {
+		displayMenu()
 
-	command := readCommand()
+		command := readCommand()
 
-	switch command {
-	case 1:
-		fmt.Println("Monitoramento...", command)
-	case 2:
-		fmt.Println("Gerando logs...", command)
-	case 0:
-		fmt.Println("Saindo...", command)
-		exitSucess()
-	default:
-		fmt.Println("Opção não reconhecida")
+		switch command {
+		case 1:
+			initMonitoring(command)
+		case 2:
+			fmt.Println("Gerando logs...", command)
+		case 0:
+			fmt.Println("Saindo...", command)
+			exitSucess()
+		default:
+			fmt.Println("Opção não reconhecida")
+		}
 	}
 }
 
@@ -44,4 +47,17 @@ func readCommand() int {
 
 func exitSucess() {
 	os.Exit(0)
+}
+
+func initMonitoring(command int) {
+	fmt.Println("Monitoramento...", command)
+	site := "https://random-status-code.herokuapp.com/"
+
+	response, _ := http.Get(site)
+
+	if response.StatusCode == 200 {
+		fmt.Println("O site: ", site, "foi carregado com sucesso", response.StatusCode)
+	} else {
+		fmt.Print("O site: ", site, " está com erro ", response.StatusCode)
+	}
 }
