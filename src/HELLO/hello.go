@@ -2,12 +2,18 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 )
 
 func main() {
+	var name string
+	fmt.Print("Por favor informar seu nome: ")
+	fmt.Scan(&name)
 
 	for {
+		helloName(name)
+
 		displayMenu()
 
 		command := readCommand()
@@ -26,21 +32,27 @@ func main() {
 	}
 }
 
+func helloName(name string) {
+	if name == "" {
+		fmt.Print("Por favor informar seu nome: ")
+		fmt.Scan(&name)
+	}
+	fmt.Println("****Seja bem-vindo ", name, " ****")
+}
+
 func displayMenu() {
+
+	fmt.Println("--------------------------------------")
 	fmt.Println("Selecione uma das opções abaixo:")
-
 	fmt.Println("1. Iniciar o monitoramento")
-
 	fmt.Println("2. Exibir os logs")
-
 	fmt.Println("0. Sair")
+	fmt.Println("--------------------------------------")
 }
 
 func readCommand() int {
 	var comando int
 	fmt.Scan(&comando)
-
-	// fmt.Println("O comando é: ", comando)
 
 	return comando
 }
@@ -53,24 +65,27 @@ func initMonitoring(command int) {
 	// fmt.Println("Monitoramento...", command)
 	// // site := "https://random-status-code.herokuapp.com/"
 
-	sites := []string{"alura.com.br", "globo.com", "natura.com.br"}
+	sites := []string{"http://www.alura.com.br", "http://www.globo.com", "http://www.natura.com.br/404"}
 
 	//for tradicional
 	// for i := 0; i < len(sites); i++ {
 	// 	fmt.Println(sites[i])
 	// }
 
-	for _, site := range sites {
-		fmt.Println(site)
+	//FOR estilo for each
+	for i, site := range sites {
+		testSite(i, site)
 	}
+}
 
-	// response, _ := http.Get(site)
-
-	// if response.StatusCode == 200 {
-	// 	fmt.Println("O site: ", site, "foi carregado com sucesso", response.StatusCode)
-	// } else {
-	// 	fmt.Print("O site: ", site, " está com erro ", response.StatusCode)
-	// }
+//function test site
+func testSite(i int, site string) {
+	response, _ := http.Get(site)
+	if response.StatusCode == 200 {
+		fmt.Println("Testando site: ", site, " foi carregado com sucesso")
+	} else {
+		fmt.Println("Testando site: ", site, " o site apresentou erro")
+	}
 }
 
 // Exercicio de slice no GO
