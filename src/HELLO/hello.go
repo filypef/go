@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 )
+
+const monitory = 3 //number of times monitoring will run
+const delay = 2    //number of delay
 
 func main() {
 	var name string
@@ -72,9 +76,14 @@ func initMonitoring(command int) {
 	// 	fmt.Println(sites[i])
 	// }
 
-	//FOR estilo for each
-	for i, site := range sites {
-		testSite(i, site)
+	for i := 0; i < monitory; i++ {
+		//FOR estilo for each
+		for i, site := range sites {
+			testSite(i, site)
+		}
+		fmt.Println("")
+		fmt.Println(i)
+		time.Sleep(delay * time.Minute)
 	}
 }
 
