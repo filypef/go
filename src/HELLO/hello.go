@@ -1,19 +1,26 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 )
 
-const monitory = 3 //number of times monitoring will run
+const monitory = 2 //number of times monitoring will run
 const delay = 2    //number of delay
 
 func main() {
+
 	var name string
 	fmt.Print("Por favor informar seu nome: ")
 	fmt.Scan(&name)
+
+	readSiteOfFile()
 
 	for {
 		helloName(name)
@@ -69,7 +76,7 @@ func initMonitoring(command int) {
 	// fmt.Println("Monitoramento...", command)
 	// // site := "https://random-status-code.herokuapp.com/"
 
-	sites := []string{"http://www.alura.com.br", "http://www.globo.com", "http://www.natura.com.br/404"}
+	sites := readSiteOfFile()
 
 	//for tradicional
 	// for i := 0; i < len(sites); i++ {
@@ -77,24 +84,69 @@ func initMonitoring(command int) {
 	// }
 
 	for i := 0; i < monitory; i++ {
-		//FOR estilo for each
-		for i, site := range sites {
-			testSite(i, site)
+		//FOR estilo for eachs
+		for _, site := range sites {
+			testSite(site)
 		}
 		fmt.Println("")
-		fmt.Println(i)
 		time.Sleep(delay * time.Minute)
 	}
 }
 
 //function test site
-func testSite(i int, site string) {
-	response, _ := http.Get(site)
+func testSite(site string) {
+	response, err := http.Get(site)
+
+	if err != nil {
+		fmt.Println("Errou")
+	}
+
 	if response.StatusCode == 200 {
 		fmt.Println("Testando site: ", site, " foi carregado com sucesso")
+		createLog(site, true)
 	} else {
 		fmt.Println("Testando site: ", site, " o site apresentou erro")
+		createLog(site, false)
 	}
+}
+
+func readSiteOfFile() []string {
+	var sites []string
+
+	arquivo, err := os.Open("sites.txt")
+
+	if err != nil {
+		println("Ocorreu um erro readSite: ", err)
+	}
+
+	leitor := bufio.NewReader(arquivo)
+
+	for {
+		linha, err := leitor.ReadString('\n')
+		linha = strings.TrimSpace(linha)
+
+		sites = append(sites, linha)
+
+		if err == io.EOF {
+			break
+		}
+	}
+	arquivo.Close()
+
+	return sites
+}
+
+func createLog(site string, statusCode bool) {
+
+	arquivo, err := os.OpenFile("log.text", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	arquivo.WriteString(site + "- online: " + strconv.FormatBool(statusCode) + "\n")
+
+	arquivo.Close()
 }
 
 // Exercicio de slice no GO
@@ -109,7 +161,7 @@ func testSite(i int, site string) {
 
 // 	nomes = append(nomes, "Josuel")
 
-// 	fmt.Println("Tamanho do slice: ", len(nomes))
+/// 	fmt.Println("Tamanho do slice: ", len(nomes))
 // 	fmt.Println("Capacidade do meu array: ", cap(nomes))
 
 // 	fmt.Println("--------------------------------------")
