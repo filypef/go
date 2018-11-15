@@ -144,7 +144,7 @@ func createLog(site string, statusCode bool) {
 		fmt.Print(err)
 	}
 
-	arquivo.WriteString(site + "- online: " + strconv.FormatBool(statusCode) + "\n")
+	arquivo.WriteString(time.Now().Format("02/01/2006 15:04:05") + " - " + site + "- online: " + strconv.FormatBool(statusCode) + "\n")
 
 	arquivo.Close()
 }
