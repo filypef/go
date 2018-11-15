@@ -1,0 +1,8 @@
+15/11/2018 02:23:28 - http://www.alura.com.br- online: true
+15/11/2018 02:23:28 - http://www.caelum.com.br- online: true
+15/11/2018 02:23:29 - https://random-status-code.herokuapp.com- online: false
+15/11/2018 02:23:29 - http://www.globo.com.br- online: true
+15/11/2018 02:24:55 - http://www.alura.com.br- online: true
+15/11/2018 02:24:55 - http://www.caelum.com.br- online: true
+15/11/2018 02:24:56 - https://random-status-code.herokuapp.com- online: false
+15/11/2018 02:24:56 - http://www.globo.com.br- online: true

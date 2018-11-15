@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
@@ -33,7 +34,7 @@ func main() {
 		case 1:
 			initMonitoring(command)
 		case 2:
-			fmt.Println("Gerando logs...", command)
+			writeLog()
 		case 0:
 			fmt.Println("Saindo...", command)
 			exitSucess()
@@ -138,7 +139,7 @@ func readSiteOfFile() []string {
 
 func createLog(site string, statusCode bool) {
 
-	arquivo, err := os.OpenFile("log.text", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	arquivo, err := os.OpenFile("log.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 
 	if err != nil {
 		fmt.Print(err)
@@ -147,6 +148,16 @@ func createLog(site string, statusCode bool) {
 	arquivo.WriteString(time.Now().Format("02/01/2006 15:04:05") + " - " + site + "- online: " + strconv.FormatBool(statusCode) + "\n")
 
 	arquivo.Close()
+}
+
+func writeLog() {
+	arquivo, err := ioutil.ReadFile("log.txt")
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(string(arquivo))
 }
 
 // Exercicio de slice no GO
